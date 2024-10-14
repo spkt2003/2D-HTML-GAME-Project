@@ -1,8 +1,9 @@
 let currentWord = "";
 let guessedWord = "";
 let attempt = 0;
-let maxAttempts = 6;
+let maxAttempts = 5;  // Set to 5 attempts
 const grid = document.getElementById('grid');
+const apiURL = "https://api.dictionaryapi.dev/api/v2/entries/en/"; // Free Dictionary API
 
 // Fetch the word list from the JSON file
 fetch('words.json')
@@ -17,13 +18,32 @@ fetch('words.json')
 document.getElementById('submit-btn').addEventListener('click', function() {
     guessedWord = document.getElementById('word-input').value.toUpperCase();
     if (guessedWord.length === 5) {
-        attempt++;
-        addGuessToGrid(guessedWord);  // Add the current guess to the history
-        checkWord(guessedWord);       // Check if the guess is correct
+        validateWord(guessedWord);  // Check if the word is valid
     } else {
         document.getElementById('message').textContent = "Word must be 5 letters!";
     }
 });
+
+// Validate the guessed word using an API
+function validateWord(guessedWord) {
+    fetch(apiURL + guessedWord.toLowerCase()) // API call to check the word
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Word not found");
+            }
+        })
+        .then(data => {
+            attempt++;
+            addGuessToGrid(guessedWord);  // Add the current guess to the history
+            checkWord(guessedWord);       // Check if the guess is correct
+        })
+        .catch(error => {
+            document.getElementById('message').textContent = "Not a valid English word!";
+            console.error('Error:', error);
+        });
+}
 
 // Add the guessed word to the grid (with color feedback)
 function addGuessToGrid(guessedWord) {
@@ -63,11 +83,36 @@ function addGuessToGrid(guessedWord) {
 
 // Check if the guessed word is correct or if the game is over
 function checkWord(guessedWord) {
+    const message = document.getElementById('message');
+
     if (guessedWord === currentWord) {
-        document.getElementById('message').textContent = "Congratulations! You guessed it!";
+        message.textContent = "Congratulations! You guessed it!";
+        showRestartButton();  // Show restart button when correct guess is made
     } else if (attempt >= maxAttempts) {
-        document.getElementById('message').textContent = `Game Over! The word was: ${currentWord}`;
+        message.textContent = `Game Over! The word was: ${currentWord}`;
+        showRestartButton();  // Show restart button after maximum attempts
     } else {
-        document.getElementById('message').textContent = `Try again! Attempts left: ${maxAttempts - attempt}`;
+        message.textContent = `Try again! Attempts left: ${maxAttempts - attempt}`;
     }
+}
+
+// Show a "Try Again!" button after max attempts or winning
+function showRestartButton() {
+    const gameContainer = document.querySelector('.game-container');
+
+    // Create the "Try Again!" button
+    const restartBtn = document.createElement('button');
+    restartBtn.textContent = "Try Again!";
+    restartBtn.id = 'restart-btn';
+    restartBtn.style.padding = '10px 20px';
+    restartBtn.style.fontSize = '18px';
+    restartBtn.style.marginTop = '20px';
+
+    // Append the button to the game container
+    gameContainer.appendChild(restartBtn);
+
+    // Add event listener to reload the page when button is clicked
+    restartBtn.addEventListener('click', function() {
+        location.reload();  // Reload the page to restart the game
+    });
 }
