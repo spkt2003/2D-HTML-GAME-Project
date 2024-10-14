@@ -1,12 +1,83 @@
 [
-    "apple",
-    "grape",
-    "melon",
-    "lemon",
-    "peach",
-    "berry",
-    "mango",
-    "plums",
-    "ilovecs",
-    "olive"
+    {
+        "word": "drive",
+        "hint": "for storing computer information."
+    },
+    {
+        "word": "bytes",
+        "hint": "A unit of computer information."
+    },
+    {
+        "word": "nodes",
+        "hint": "A Data structures such as linked lists."
+    },
+    {
+        "word": "stack",
+        "hint": "A way of storing data on a computer so that the last piece of data to be stored is the first one to be found by the computer."
+    },
+    {
+        "word": "virus",
+        "hint": "a computer program or part of a computer program that can make copies of itself and is intended to prevent the computer from working normally."
+    },
+    {
+        "word": "login",
+        "hint": "A name that you enter in order to be able to use a computer system."
+    },
+    {
+        "word": "fetch",
+        "hint": "To take data or instructions from memory and put them into the central processing unit (CPU) for processing."
+    },
+    {
+        "word": "frame",
+        "hint": "This involves managing or displaying data across the web, programs, and computer networks."
+    },
+    {
+        "word": "index",
+        "hint": "To obtain the value at a specific location in a list."
+    },
+    {
+        "word": "array",
+        "hint": "a series of memory locations – or 'boxes' – each of which holds a single item of data, but with each box sharing the same name."
+    },
+    {
+        "word": "loops",
+        "hint": "A series of instructions that is repeated until a particular thing happens."
+    },
+    {
+        "word": "class",
+        "hint": "A template definition of the methods and variables in a particular kind of object."
+    },
+    {
+        "word": "debug",
+        "hint": "To remove bugs (= problems) from software."
+    },
+    {
+        "word": "logic",
+        "hint": "actions that a computer performs, such as comparing and matching, that involve simple, yes or no choices, rather than more complicated mathematics."
+    },
+    {
+        "word": "cache",
+        "hint": "An area or type of computer memory in which information that is often in use can be stored temporarily, so that you can get to it quickly."
+    },
+    {
+        "word": "error",
+        "hint": "A situation in which something goes wrong in a computer program, or a message that this has happened."
+    },
+    {
+        "word": "event",
+        "hint": "Is an action or occurrence recognized by software."
+    },
+    {
+        "word": "codes",
+        "hint": "A language used to program (= give instructions to) computers."
+    },
+    {
+        "word": "label",
+        "hint": "A round fruit with firm, white flesh and a green, red, or yellow skin."
+    },
+    {
+        "word": "query",
+        "hint": "is a name assigned to a piece of data, which could be a file, a data packet, a block of memory, or an element in a programming language."
+    }
 ]
+
