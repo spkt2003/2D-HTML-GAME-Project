@@ -4,18 +4,27 @@ let attempt = 0;
 let maxAttempts = 5;  // Set to 5 attempts
 const grid = document.getElementById('grid');
 const apiURL = "https://api.dictionaryapi.dev/api/v2/entries/en/"; // Free Dictionary API
+let isGameOver = false; // ตัวแปรสำหรับเก็บสถานะเกม
+let currentHint = ""; // ตัวแปรสำหรับเก็บคำใบ้
 
 // Fetch the word list from the JSON file
 fetch('words.json')
     .then(response => response.json())
     .then(data => {
-        currentWord = data[Math.floor(Math.random() * data.length)].toUpperCase();
+        const randomEntry = data[Math.floor(Math.random() * data.length)];
+        currentWord = randomEntry.word.toUpperCase();
+        currentHint = randomEntry.hint; // เก็บคำใบ้
         console.log("Word to guess: ", currentWord); // For debugging
     })
     .catch(error => console.error('Error fetching words:', error));
 
 // Event listener for the submit button
 document.getElementById('submit-btn').addEventListener('click', function() {
+    // ตรวจสอบสถานะเกมก่อนที่จะอนุญาตให้ส่งคำใหม่
+    if (isGameOver) {
+        return; // ไม่ทำอะไรถ้าเกมจบแล้ว
+    }
+
     guessedWord = document.getElementById('word-input').value.toUpperCase();
     if (guessedWord.length === 5) {
         validateWord(guessedWord);  // Check if the word is valid
@@ -88,9 +97,11 @@ function checkWord(guessedWord) {
     if (guessedWord === currentWord) {
         message.textContent = "Congratulations! You guessed it!";
         showRestartButton();  // Show restart button when correct guess is made
+        isGameOver = true; // เปลี่ยนสถานะเกมเป็นจบ
     } else if (attempt >= maxAttempts) {
         message.textContent = `Game Over! The word was: ${currentWord}`;
         showRestartButton();  // Show restart button after maximum attempts
+        isGameOver = true; // เปลี่ยนสถานะเกมเป็นจบ
     } else {
         message.textContent = `Try again! Attempts left: ${maxAttempts - attempt}`;
     }
@@ -116,3 +127,18 @@ function showRestartButton() {
         location.reload();  // Reload the page to restart the game
     });
 }
+
+// ฟังก์ชันสำหรับสุ่มคำใบ้
+function giveHint() {
+    const hintMessage = document.getElementById('hint-message');
+
+    // แสดงคำใบ้ที่กำหนดเอง
+    hintMessage.textContent = `Hint: ${currentHint}`;
+}
+
+// Event listener สำหรับปุ่ม Hint
+document.getElementById('hint-btn').addEventListener('click', function() {
+    if (!isGameOver) { // เช็คสถานะเกมก่อนให้กดปุ่ม
+        giveHint();
+    }
+});
