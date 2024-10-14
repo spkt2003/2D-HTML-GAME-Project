@@ -1,118 +1,71 @@
-let currentWord = "";
-let guessedWord = "";
-let attempt = 0;
-let maxAttempts = 5;  // Set to 5 attempts
-const grid = document.getElementById('grid');
-const apiURL = "https://api.dictionaryapi.dev/api/v2/entries/en/"; // Free Dictionary API
-
-// Fetch the word list from the JSON file
-fetch('words.json')
-    .then(response => response.json())
-    .then(data => {
-        currentWord = data[Math.floor(Math.random() * data.length)].toUpperCase();
-        console.log("Word to guess: ", currentWord); // For debugging
-    })
-    .catch(error => console.error('Error fetching words:', error));
-
-// Event listener for the submit button
-document.getElementById('submit-btn').addEventListener('click', function() {
-    guessedWord = document.getElementById('word-input').value.toUpperCase();
-    if (guessedWord.length === 5) {
-        validateWord(guessedWord);  // Check if the word is valid
-    } else {
-        document.getElementById('message').textContent = "Word must be 5 letters!";
-    }
-});
-
-// Validate the guessed word using an API
-function validateWord(guessedWord) {
-    fetch(apiURL + guessedWord.toLowerCase()) // API call to check the word
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error("Word not found");
-            }
-        })
-        .then(data => {
-            attempt++;
-            addGuessToGrid(guessedWord);  // Add the current guess to the history
-            checkWord(guessedWord);       // Check if the guess is correct
-        })
-        .catch(error => {
-            document.getElementById('message').textContent = "Not a valid English word!";
-            console.error('Error:', error);
-        });
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
 }
 
-// Add the guessed word to the grid (with color feedback)
-function addGuessToGrid(guessedWord) {
-    const guessRow = document.createElement('div');
-    guessRow.classList.add('guess-row');
-
-    // Create a temporary copy of the word for matching purposes
-    let tempWord = currentWord.split('');
-
-    // First pass: Check correct letters in the correct positions (Green)
-    for (let i = 0; i < guessedWord.length; i++) {
-        let cell = document.createElement('div');
-        cell.textContent = guessedWord[i];
-        cell.classList.add('grid-cell');
-        if (guessedWord[i] === currentWord[i]) {
-            cell.classList.add('correct-position');  // Add green class
-            tempWord[i] = null;  // Mark letter as used
-        }
-        guessRow.appendChild(cell);
-    }
-
-    // Second pass: Check correct letters in the wrong positions (Yellow)
-    for (let i = 0; i < guessedWord.length; i++) {
-        let cell = guessRow.children[i];
-        if (!cell.classList.contains('correct-position') && tempWord.includes(guessedWord[i])) {
-            cell.classList.add('correct-letter');  // Add yellow class
-            tempWord[tempWord.indexOf(guessedWord[i])] = null;  // Mark letter as used
-        } else if (!cell.classList.contains('correct-position')) {
-            // Incorrect letter (Gray)
-            cell.classList.add('wrong-letter');  // Add gray class
-        }
-    }
-
-    // Append the guess row to the grid
-    grid.appendChild(guessRow);
+.game-container {
+    margin: 20px auto;
+    max-width: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
-// Check if the guessed word is correct or if the game is over
-function checkWord(guessedWord) {
-    const message = document.getElementById('message');
-
-    if (guessedWord === currentWord) {
-        message.textContent = "Congratulations! You guessed it!";
-        showRestartButton();  // Show restart button when correct guess is made
-    } else if (attempt >= maxAttempts) {
-        message.textContent = `Game Over! The word was: ${currentWord}`;
-        showRestartButton();  // Show restart button after maximum attempts
-    } else {
-        message.textContent = `Try again! Attempts left: ${maxAttempts - attempt}`;
-    }
+#grid {
+    display: flex;
+    flex-direction: column; /* Stack each guess as a new row */
+    align-items: center;
+    margin-bottom: 20px; /* Space below the grid */
 }
 
-// Show a "Try Again!" button after max attempts or winning
-function showRestartButton() {
-    const gameContainer = document.querySelector('.game-container');
+.guess-row {
+    display: grid;
+    grid-template-columns: repeat(5, 50px); /* 5 letters in a row */
+    grid-gap: 10px;
+    margin-bottom: 10px; /* Space between guesses */
+}
 
-    // Create the "Try Again!" button
-    const restartBtn = document.createElement('button');
-    restartBtn.textContent = "Try Again!";
-    restartBtn.id = 'restart-btn';
-    restartBtn.style.padding = '10px 20px';
-    restartBtn.style.fontSize = '18px';
-    restartBtn.style.marginTop = '20px';
+.grid-cell {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    text-transform: uppercase;
+    background-color: lightgray;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
 
-    // Append the button to the game container
-    gameContainer.appendChild(restartBtn);
+.correct-position {
+    background-color: green; /* Correct letter and position */
+}
 
-    // Add event listener to reload the page when button is clicked
-    restartBtn.addEventListener('click', function() {
-        location.reload();  // Reload the page to restart the game
-    });
+.correct-letter {
+    background-color: yellow; /* Correct letter but wrong position */
+}
+
+.wrong-letter {
+    background-color: lightgray; /* Incorrect letter */
+}
+
+#word-input {
+    font-size: 18px;
+    padding: 10px;
+    width: 75%;
+    margin-bottom: 10px;
+}
+
+#submit-btn {
+    padding: 10px 20px;
+    font-size: 18px;
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 18px;
 }
