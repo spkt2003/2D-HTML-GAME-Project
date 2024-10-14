@@ -1,9 +1,9 @@
-let currentWord = ""; //ใช้เช็คเฉลยคำตอบ 
-let guessedWord = ""; //ใช้เช็คคำตอบที่เราส่งเข้าไป
-let attempt = 0;      //จำนวนครั้งเริ่มต้นในการทาย
+let currentWord = ""; // ใช้เช็คเฉลยคำตอบ 
+let guessedWord = ""; // ใช้เช็คคำตอบที่เราส่งเข้าไป
+let attempt = 0;      // จำนวนครั้งเริ่มต้นในการทาย
 let maxAttempts = 5;  // จำนวนครั้งสูงสุดในการทาย
 const grid = document.getElementById('grid');
-const apiURL = "https://api.dictionaryapi.dev/api/v2/entries/en/"; // API ที่่ใช้ในการตรวจคำที่เราส่งเข้าไปว่าเป็นคำศัพท์ Eng หรือไม่เรียกใขช
+const apiURL = "https://api.dictionaryapi.dev/api/v2/entries/en/"; // API ที่่ใช้ในการตรวจคำที่เราส่งเข้าไปว่าเป็นคำศัพท์ Eng หรือไม่
 let isGameOver = false; // ตัวแปรสำหรับเก็บสถานะเกม
 let currentHint = ""; // ตัวแปรสำหรับเก็บคำใบ้
 
@@ -142,3 +142,29 @@ document.getElementById('hint-btn').addEventListener('click', function() {
         giveHint();
     }
 });
+
+// เพิ่ม event listeners สำหรับปุ่ม keyboard
+const keys = document.querySelectorAll('.key');
+keys.forEach(key => {
+    key.addEventListener('click', function() {
+        const keyValue = this.textContent;
+        handleKeyPress(keyValue); // เรียกฟังก์ชันจัดการการกดปุ่ม
+    });
+});
+
+// ฟังก์ชันจัดการการกดปุ่ม
+function handleKeyPress(keyValue) {
+    const inputField = document.getElementById('word-input');
+    
+    if (keyValue === 'ENTER') {
+        document.getElementById('submit-btn').click(); // คลิกปุ่ม submit
+    } else if (keyValue === '⌫') {
+        // หากกดปุ่มลบ ให้ลบตัวอักษรสุดท้ายใน input
+        inputField.value = inputField.value.slice(0, -1);
+    } else {
+        // เพิ่มตัวอักษรลงใน input หากเป็นตัวอักษรปกติ
+        if (inputField.value.length < 5) {
+            inputField.value += keyValue;
+        }
+    }
+}
