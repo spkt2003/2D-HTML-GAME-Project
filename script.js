@@ -1,13 +1,13 @@
-let currentWord = "";
-let guessedWord = "";
-let attempt = 0;
-let maxAttempts = 5;  // Set to 5 attempts
+let currentWord = ""; //ใช้เช็คเฉลยคำตอบ 
+let guessedWord = ""; //ใช้เช็คคำตอบที่เราส่งเข้าไป
+let attempt = 0;      //จำนวนครั้งเริ่มต้นในการทาย
+let maxAttempts = 5;  // จำนวนครั้งสูงสุดในการทาย
 const grid = document.getElementById('grid');
-const apiURL = "https://api.dictionaryapi.dev/api/v2/entries/en/"; // Free Dictionary API
+const apiURL = "https://api.dictionaryapi.dev/api/v2/entries/en/"; // API ที่่ใช้ในการตรวจคำที่เราส่งเข้าไปว่าเป็นคำศัพท์ Eng หรือไม่เรียกใขช
 let isGameOver = false; // ตัวแปรสำหรับเก็บสถานะเกม
 let currentHint = ""; // ตัวแปรสำหรับเก็บคำใบ้
 
-// Fetch the word list from the JSON file
+// เรียกใช้คำศัพท์ใน word.json
 fetch('words.json')
     .then(response => response.json())
     .then(data => {
@@ -27,7 +27,7 @@ document.getElementById('submit-btn').addEventListener('click', function() {
 
     guessedWord = document.getElementById('word-input').value.toUpperCase();
     if (guessedWord.length === 5) {
-        validateWord(guessedWord);  // Check if the word is valid
+        validateWord(guessedWord);  // Check ว่า Input เป็นคำ
     } else {
         document.getElementById('message').textContent = "Word must be 5 letters!";
     }
@@ -35,7 +35,7 @@ document.getElementById('submit-btn').addEventListener('click', function() {
 
 // Validate the guessed word using an API
 function validateWord(guessedWord) {
-    fetch(apiURL + guessedWord.toLowerCase()) // API call to check the word
+    fetch(apiURL + guessedWord.toLowerCase()) // Check คำที่เราใส่ว่าตรงกับที่มีใน API หรือไม่
         .then(response => {
             if (response.ok) {
                 return response.json();
