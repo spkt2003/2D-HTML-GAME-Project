@@ -7,13 +7,52 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <button id="hint-btn">Get a Hint</button>
+    <div id="hint-message"></div> <!-- Display hint message here -->
+
     <div class="game-container">
-        <h1>Wordle Clone</h1>
+        <h1>Tech Guesser</h1>
         <div id="grid"></div> <!-- Word guess history grid -->
         <input type="text" id="word-input" maxlength="5" placeholder="Enter your guess">
         <button id="submit-btn">Submit</button>
         <div id="message"></div>
     </div>
+    <div id="keyboard">
+        <div class="keyboard-row">
+            <button class="key">Q</button>
+            <button class="key">W</button>
+            <button class="key">E</button>
+            <button class="key">R</button>
+            <button class="key">T</button>
+            <button class="key">Y</button>
+            <button class="key">U</button>
+            <button class="key">I</button>
+            <button class="key">O</button>
+            <button class="key">P</button>
+        </div>
+        <div class="keyboard-row">
+            <button class="key">A</button>
+            <button class="key">S</button>
+            <button class="key">D</button>
+            <button class="key">F</button>
+            <button class="key">G</button>
+            <button class="key">H</button>
+            <button class="key">J</button>
+            <button class="key">K</button>
+            <button class="key">L</button>
+        </div>
+        <div class="keyboard-row">
+            <button id="enter-key" class="key">ENTER</button>
+            <button class="key">Z</button>
+            <button class="key">X</button>
+            <button class="key">C</button>
+            <button class="key">V</button>
+            <button class="key">B</button>
+            <button class="key">N</button>
+            <button class="key">M</button>
+            <button id="delete-key" class="key">⌫</button>
+        </div>
+    </div>    
     <script src="script.js"></script>
 </body>
 </html>
