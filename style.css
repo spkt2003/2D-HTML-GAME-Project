@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+}
+
+.game-container {
+    margin: 20px auto;
+    max-width: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+#grid {
+    display: flex;
+    flex-direction: column; /* Stack each guess as a new row */
+    align-items: center;
+    margin-bottom: 20px; /* Space below the grid */
+}
+
+.guess-row {
+    display: grid;
+    grid-template-columns: repeat(5, 50px); /* 5 letters in a row */
+    grid-gap: 10px;
+    margin-bottom: 10px; /* Space between guesses */
+}
+
+.grid-cell {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    text-transform: uppercase;
+    background-color: lightgray;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.correct-position {
+    background-color: green; /* Correct letter and position */
+}
+
+.correct-letter {
+    background-color: yellow; /* Correct letter but wrong position */
+}
+
+.wrong-letter {
+    background-color: lightgray; /* Incorrect letter */
+}
+
+#word-input {
+    font-size: 18px;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#submit-btn {
+    padding: 10px 20px;
+    font-size: 18px;
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 18px;
+}
