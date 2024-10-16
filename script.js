@@ -47,10 +47,12 @@ function validateWord(guessedWord) {
             attempt++;
             addGuessToGrid(guessedWord);  // Add the current guess to the history
             checkWord(guessedWord);       // Check if the guess is correct
+            document.getElementById('word-input').value = ""; // ล้างช่อง input
         })
         .catch(error => {
             document.getElementById('message').textContent = "Not a valid English word!";
             console.error('Error:', error);
+            document.getElementById('word-input').value = ""; // ล้างช่อง input เมื่อเจอคำผิด
         });
 }
 
@@ -158,6 +160,7 @@ function handleKeyPress(keyValue) {
     
     if (keyValue === 'ENTER') {
         document.getElementById('submit-btn').click(); // คลิกปุ่ม submit
+        inputField.value = ""; // ล้างช่อง input เมื่อกดปุ่ม Enter
     } else if (keyValue === '⌫') {
         // หากกดปุ่มลบ ให้ลบตัวอักษรสุดท้ายใน input
         inputField.value = inputField.value.slice(0, -1);
